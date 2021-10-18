@@ -6,6 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import br.com.gagjunior.cm.execao.ExplosaoException;
+
 public class CampoTeste {
 
 	private Campo campo;
@@ -62,9 +64,55 @@ public class CampoTeste {
 		campo.alternarMarcacao();
 		assertTrue(campo.ehMarcado());
 	}
-	
+
 	@Test
 	void testeValorPadraoAtributoMarcado() {
 		assertFalse(campo.ehMarcado());
+	}
+
+	@Test
+	void testeAbrirNaoMinadoNaoMarcado() {
+		assertTrue(campo.abrir());
+	}
+
+	@Test
+	void testeAbrirNaoMinadoMarcado() {
+		campo.alternarMarcacao();
+		assertFalse(campo.abrir());
+	}
+
+	@Test
+	void testeAbrirMinadoMarcado() {
+		campo.alternarMarcacao();
+		campo.minar();
+		assertFalse(campo.abrir());
+	}
+
+	void testeAbrirMinadoNaoMarcado() {
+		campo.minar();
+
+		assertThrows(ExplosaoException.class, () -> {
+			campo.abrir();
+		});
+	}
+
+	@Test
+	void testeAbrirComVizinho() {
+
+		Campo campo11 = new Campo(1, 1);
+		Campo campo12 = new Campo(1, 1);
+		
+		campo12.minar();		
+		
+		Campo campo22 = new Campo(2, 2);
+		
+		campo22.adicionarVizinho(campo11);
+		campo22.adicionarVizinho(campo12);
+		
+		campo.adicionarVizinho(campo22);
+		campo.abrir();
+		
+		assertTrue(campo22.ehAberto() && campo11.ehFechado());
+		
 	}
 }
