@@ -83,6 +83,10 @@ public class Campo {
 	public boolean ehFechado() {
 		return !aberto;
 	}
+	
+	public boolean ehMinado() {
+		return minado;
+	}
 
 	public int getLinha() {
 		return linha;
