@@ -21,12 +21,25 @@ public class Tabuleiro {
 		associarVizinhos();
 		sortearMinas();
 	}
+	
+	public void abrir(int linha, int coluna) {
+		campos.parallelStream()
+			.filter(c -> c.getLinha() == linha && c.getColuna() == coluna)
+			.findFirst().ifPresent(c -> c.abrir());
+	}
+	
+	public void alternarMarcacao(int linha, int coluna) {
+		campos.parallelStream()
+			.filter(c -> c.getLinha() == linha && c.getColuna() == coluna)
+			.findFirst().ifPresent(c -> c.alternarMarcacao());
+	}
+
 
 	private void gerarCampos() {
 		
-		for (int l = 0; l < linhas; l++) {
-			for (int c = 0; c < colunas; c++) {
-				campos.add(new Campo(l, c));				
+		for (int linha = 0; linha < linhas; linha++) {
+			for (int coluna = 0; coluna < colunas; coluna++) {
+				campos.add(new Campo(linha, coluna));				
 			}			
 		}
 	} 
